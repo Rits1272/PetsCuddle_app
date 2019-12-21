@@ -2,9 +2,11 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import Home from './src/screens/Home';
+import PetFood from './src/screens/PetFood';
 
 const MainNavigator = createStackNavigator({
-  Home : {screen : Home}
+  Home : {screen : Home},
+  PetFood : {screen : PetFood}
 },{
 defaultNavigationOptions:{
   headerStyle:{
