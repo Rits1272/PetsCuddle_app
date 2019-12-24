@@ -9,57 +9,41 @@ import {
   Right,
   H1,
 } from 'native-base';
-import {Text, Image, ScrollView, TouchableHighlight, ActivityIndicator, View} from 'react-native';
+import {Text, Image, ScrollView} from 'react-native';
 import axios from 'axios';
 import Search from '../components/Search';
 
-export default class PetFood extends React.Component {
+export default class PetParlour extends React.Component {
   static navigationOptions = {
-    title: 'Pet Food',
+    title: 'Pet Parlour',
   };
 
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      loading : true,
     };
   }
 
   async componentDidMount() {
-    await axios.get('http://192.168.1.6:8000/api/products/petfood')
+    await axios('http://192.168.1.6:8000/api/products/petparlour')
       .then(res =>
         this.setState({
           data: res.data,
-          loading : false
         }),
       )
       .catch(err => console.log(err));
   }
 
   render() {
-      if(this.state.loading){
-          return (
-          <View style={{flex: 1,
-            alignItems: 'center', 
-            justifyContent: 'center'}}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>)
-      }
     return (
       <ScrollView>
           <Search />
         {this.state.data.map(data => (
-            <TouchableHighlight
-            onPress={()=> this.props.navigation.navigate('DetailProduct', {
-              data : data
-            })}
-            >
            <Content>
            <Card>
              <CardItem cardBody>
-               <Image 
-               source={{uri: data.image}} style={{height: 350, width: null, flex: 1}}/>
+               <Image source={{uri: data.image}} style={{height: 350, width: null, flex: 1}}/>
              </CardItem>
              <CardItem>
                <Left>
@@ -75,7 +59,6 @@ export default class PetFood extends React.Component {
              </CardItem>
            </Card>
          </Content>
-         </TouchableHighlight>
         ))}
       </ScrollView>
     );

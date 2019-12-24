@@ -36,6 +36,10 @@ target 'petcare' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'RNPayTm', :path => '../node_modules/@philly25/react-native-paytm'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'petcareTests' do
     inherit! :search_paths
     # Pods for testing

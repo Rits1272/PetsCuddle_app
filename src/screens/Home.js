@@ -24,7 +24,9 @@ export default class Home extends React.Component {
                 </View>
 
                 <View style={{flex : 1}}>
-                    <Button style={styles.btn} block primary>
+                    <Button 
+                    onPress = {() => this.props.navigation.navigate('PetMedicine')}
+                    style={styles.btn} block primary>
                         <Text style={styles.btntext}>Pet Medicine</Text>
                     </Button>
                 </View>
@@ -32,13 +34,17 @@ export default class Home extends React.Component {
 
             <View style={styles.container}>
                 <View style={{flex : 1}}>
-                    <Button style={styles.btn} block primary>
+                    <Button
+                    onPress = {() => this.props.navigation.navigate('PetParlour')}
+                    style={styles.btn} block primary>
                         <Text style={styles.btntext}>Pet Parlour</Text>
                     </Button>
                 </View>
 
                 <View style={{flex : 1}}>
-                    <Button style={styles.btn} block primary>
+                    <Button
+                    onPress = {() => this.props.navigation.navigate('PetFood')}
+                    style={styles.btn} block primary>
                         <Text style={styles.btntext}>Pet Accessories</Text>
                     </Button>
                 </View>
