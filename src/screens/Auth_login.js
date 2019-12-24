@@ -11,12 +11,13 @@ import {
   ImageBackground,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
 
 export default class Auth_login extends Component {
   constructor(props) {
     super(props);
     state = {
-      email: '',
+      username: '',
       password: '',
     };
   }
@@ -25,11 +26,30 @@ export default class Auth_login extends Component {
     title: 'Login',
   };
 
-  onClickListener = viewId => {
-    Alert.alert('Alert', 'Button pressed ' + viewId);
-  };
+  requestLogin = async () => {
+    var token = '';
+    await axios.post(`http://192.168.1.6:8000/auth/login/`, {
+        'username' : this.state.username,
+        'password' : this.state.password
+    })
+    .then(response => {
+        token = response.data.token;
+    // We set the returned token as the default authorization header
+    axios.defaults.headers.common.Authorization = `Token ${token}`;
+    })
+    .catch(err => console.log(err));
 
-  render() {
+   if(token){
+    this.props.navigation.navigate('Home');
+   }
+
+   else{
+     alert("Credentials Invalid!")
+   }
+   }
+
+  
+   render() {
     return (
       <ImageBackground
         source={require('../img/back.jpg')}
@@ -39,13 +59,12 @@ export default class Auth_login extends Component {
             Pet Care
           </Text>
           <View style={styles.inputContainer}>
-            <Icon name="envelope" style={{fontSize: 25, marginLeft: 15}} />
+            <Icon name="user" style={{fontSize: 25, marginLeft: 15}} />
             <TextInput
               style={styles.inputs}
-              placeholder="Email"
-              keyboardType="email-address"
+              placeholder="Username"
               underlineColorAndroid="transparent"
-              onChangeText={email => this.setState({email})}
+              onChangeText={username => this.setState({username})}
             />
           </View>
 
@@ -62,7 +81,7 @@ export default class Auth_login extends Component {
 
           <TouchableHighlight
             style={[styles.buttonContainer, styles.loginButton]}
-            onPress={() => this.onClickListener('login')}>
+            onPress={() => this.requestLogin()}>
             <Text style={styles.loginText}>Login</Text>
           </TouchableHighlight>
 

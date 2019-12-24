@@ -36,6 +36,7 @@ defaultNavigationOptions:{
 
 const InitialNavigator = createSwitchNavigator({
   Splash : SplashScreen,
+  Login : Auth_login,
   App : MainNavigator
 })
 
