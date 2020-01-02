@@ -10,7 +10,8 @@ import DetailProduct from './src/screens/DetailProduct';
 import SplashScreen from './src/screens/SplashScreen';
 import Auth_login from './src/screens/Auth_login';
 import Auth_register from './src/screens/Auth_register';
-
+import Contact from './src/screens/Contact';
+import Treatment from './src/screens/Treatment';
 
 
 const MainNavigator = createStackNavigator({
@@ -22,6 +23,8 @@ const MainNavigator = createStackNavigator({
   PetParlour : {screen : PetParlour},
   PetAccessories : {screen : PetAccessories},
   DetailProduct : {screen : DetailProduct},
+  Contact : {screen : Contact},
+  Treatment : {screen : Treatment},
 },{
 defaultNavigationOptions:{
   headerStyle:{

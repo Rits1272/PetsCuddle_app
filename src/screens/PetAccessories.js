@@ -13,7 +13,7 @@ import {Text, Image, ScrollView} from 'react-native';
 import axios from 'axios';
 import Search from '../components/Search';
 
-export default class PetAccessories extends React.Component {
+export default class PetAccessories extends React.Component{
   static navigationOptions = {
     title: 'Pet Accessories',
   };
@@ -26,7 +26,7 @@ export default class PetAccessories extends React.Component {
   }
 
   async componentDidMount() {
-    await axios('http://192.168.1.6:8000/api/products/petaccessories')
+    await axios('http://192.168.43.48:8000/api/products/petaccessories')
       .then(res =>
         this.setState({
           data: res.data,

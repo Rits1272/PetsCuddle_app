@@ -27,7 +27,7 @@ export default class PetFood extends React.Component {
   }
 
   async componentDidMount() {
-    await axios.get('http://192.168.1.6:8000/api/products/petfood')
+    await axios.get('http://192.168.43.48:8000/api/products/petfood')
       .then(res =>
         this.setState({
           data: res.data,

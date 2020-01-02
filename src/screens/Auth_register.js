@@ -5,7 +5,6 @@ import {
   View,
   TextInput,
   TouchableHighlight,
-  Alert,
   ImageBackground,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -26,7 +25,7 @@ export default class Auth_register extends Component {
   };
 
   submitRequest = async () => {
-    await axios.post('http://192.168.1.6:8000/auth/register/', {
+    await axios.post('http://192.168.43.48:8000/auth/register/', {
       'username' : this.state.username,
       'password' : this.state.password,
       'email' : this.state.email
@@ -82,7 +81,7 @@ export default class Auth_register extends Component {
           <TouchableHighlight
             style={styles.buttonContainer}
             onPress={() => this.props.navigation.navigate('Auth_login')}>
-            <Text>Login</Text>
+            <Text>Already registered? Login</Text>
           </TouchableHighlight>
         </View>
       </ImageBackground>

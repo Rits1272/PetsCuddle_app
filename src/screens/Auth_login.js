@@ -28,7 +28,7 @@ export default class Auth_login extends Component {
 
   requestLogin = async () => {
     var token = '';
-    await axios.post(`http://192.168.1.6:8000/auth/login/`, {
+    await axios.post(`http://192.168.43.48:8000/auth/login/`, {
         'username' : this.state.username,
         'password' : this.state.password
     })
@@ -94,7 +94,7 @@ export default class Auth_login extends Component {
           <TouchableHighlight
             style={styles.buttonContainer}
             onPress={() => this.props.navigation.navigate('Auth_register')}>
-            <Text>Register</Text>
+            <Text>New Customer? Register</Text>
           </TouchableHighlight>
         </View>
       </ImageBackground>
