@@ -3,134 +3,126 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  TouchableHighlight,
+  StatusBar,
   ImageBackground,
+  Dimensions,
+  Button,
+  TouchableOpacity,
+  ScrollView
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
+import Images from '../constants/Images';
+import {Input, Item} from 'native-base';
 
 export default class Auth_register extends Component {
   constructor(props) {
     super(props);
-    state = {
+    this.state = {
       username: '',
       password: '',
       email: '',
     };
   }
 
-  static navigationOptions = {
-    title: 'Register',
-  };
-
   submitRequest = async () => {
     await axios.post('http://192.168.43.48:8000/auth/register/', {
-      'username' : this.state.username,
-      'password' : this.state.password,
-      'email' : this.state.email
-    })
-    alert('Done')
-   } 
+      username: this.state.username,
+      password: this.state.password,
+      email: this.state.email,
+    });
+  };
 
   render() {
     return (
-      <ImageBackground
-        source={require('../img/back.jpg')}
-        style={{height: '100%', width: '100%'}}>
-        <View style={styles.container}>
-          <Icon style={{fontSize: 70, marginBottom: 50}} name="paw" />
-          <View style={styles.inputContainer}>
-            <Icon name="user" style={{fontSize: 25, marginLeft: 15}} />
-            <TextInput
-              style={styles.inputs}
-              placeholder="Username"
-              underlineColorAndroid="transparent"
-              onChangeText={username => this.setState({username : username})}
-            />
-          </View>
+      <View style={{flex : 1, justifyContent : 'center', alignItems :'center'}}>
+        <StatusBar hidden/>
+        <ImageBackground
+          style={styles.imageBackground}
+          source={Images.RegisterBackground}>
+            <View style={styles.registerContainer}>
+              <Text style={{color : '#696969', margin : 10}}>Sign up the classic way</Text>
+              <Item 
+              style={[styles.ItemContainer, {marginTop : 30}]}
+              rounded>
+                <Icon style={styles.IconStyle} 
+                name = 'school'/>
+                <Input
+                onChangeText = {username => this.setState({username})}
+                placeholder = 'Username' />
+              </Item>
 
-          <View style={styles.inputContainer}>
-            <Icon name="eye" style={{fontSize: 25, marginLeft: 15}} />
-            <TextInput
-              style={styles.inputs}
-              placeholder="Password"
-              secureTextEntry={true}
-              underlineColorAndroid="transparent"
-              onChangeText={password => this.setState({password : password})}
-            />
-          </View>
+              <Item 
+              style={[styles.ItemContainer, {marginTop : 30}]}
+              rounded>
+                <Icon style={styles.IconStyle} 
+                name = 'email'/>
+                <Input
+                keyboardType = 'email-address'
+                onChangeText = {email => this.setState({email})}
+                placeholder = 'Email' />
+              </Item>
 
-          <View style={styles.inputContainer}>
-            <Icon name="envelope" style={{fontSize: 25, marginLeft: 15}} />
-            <TextInput
-              style={styles.inputs}
-              placeholder="Email"
-              keyboardType="email-address"
-              underlineColorAndroid="transparent"
-              onChangeText={email => this.setState({email : email})}
-            />
-          </View>
+              <Item 
+              style={[styles.ItemContainer, {marginTop : 30}]}
+              rounded>
+                <Icon style={styles.IconStyle} 
+                name = 'lock'/>
+                <Input
+                secureTextEntry = {true}
+                onChangeText = {password => this.setState({password})}
+                placeholder = 'Password' />
+              </Item>
 
-          <TouchableHighlight
-            style={[styles.buttonContainer, styles.loginButton]}
-            onPress={this.submitRequest}>
-            <Text style={styles.loginText}>Register</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight
-            style={styles.buttonContainer}
-            onPress={() => this.props.navigation.navigate('Auth_login')}>
-            <Text>Already registered? Login</Text>
-          </TouchableHighlight>
-        </View>
-      </ImageBackground>
+              <TouchableOpacity style={styles.button}>
+                <Button color='#3C40C6' title='Create Account'/>
+              </TouchableOpacity>
+  
+              <Text style={{color : '#696969', marginTop : 50, fontSize : 11}}>ALREADY HAVE AN ACCOUNT?</Text>
+              <TouchableOpacity
+                onPress = {() => this.props.navigation.navigate('Auth_login')}
+              >
+              <Text style={{color : '#696969', marginTop : 5, fontSize : 13}}>LOGIN HERE</Text>
+                
+              </TouchableOpacity>
+            </View>
+        </ImageBackground>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  registerContainer : {
+    width : Dimensions.get('window').width * 0.85,
+    height : Dimensions.get('window').height * 0.75,
+    backgroundColor: "#F4F5F7", 
+    alignSelf : 'center',
+    elevation : 1,
+    alignItems : 'center',
   },
-  inputContainer: {
-    borderBottomColor: '#F5FCFF',
+
+  imageBackground : {
+    width : '100%',
+    height : '100%',
+    justifyContent : 'center'
+  },
+
+  ItemContainer : {
+    width : Dimensions.get('window').width * 0.85 - 30,
+  },
+
+  IconStyle : {
+   fontSize : 20,
+   marginLeft : 10
+  },
+
+  button : {
+    marginTop : 50,
     backgroundColor: '#FFFFFF',
-    borderRadius: 30,
-    borderBottomWidth: 1,
-    width: 250,
-    height: 45,
-    marginBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  inputs: {
-    height: 45,
-    marginLeft: 16,
-    borderBottomColor: '#FFFFFF',
-    flex: 1,
-  },
-  inputIcon: {
-    width: 30,
-    height: 30,
-    marginLeft: 15,
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    height: 45,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    width: 250,
-    borderRadius: 30,
-  },
-  loginButton: {
-    backgroundColor: '#00b5ec',
-  },
-  loginText: {
-    color: 'white',
-  },
+    shadowColor: 'rgba(0, 0, 0, 10)',
+    shadowOpacity: 1,
+    elevation: 25,
+  }
+
 });

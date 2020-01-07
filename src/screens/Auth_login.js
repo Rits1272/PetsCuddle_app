@@ -3,147 +3,135 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  Button,
-  TouchableHighlight,
-  Image,
-  Alert,
+  StatusBar,
   ImageBackground,
+  Dimensions,
+  Button,
+  TouchableOpacity,
+  Vibration
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
+import Images from '../constants/Images';
+import {Input, Item} from 'native-base';
 
 export default class Auth_login extends Component {
   constructor(props) {
     super(props);
-    state = {
+    this.state = {
       username: '',
       password: '',
+      error_message : '',
     };
   }
 
-  static navigationOptions = {
-    title: 'Login',
-  };
+  invalidVibration = () => {
+    Vibration.vibrate(1000);
+  }
 
-  requestLogin = async () => {
+  submitRequest = async () => {
     var token = '';
-    await axios.post(`http://192.168.43.48:8000/auth/login/`, {
-        'username' : this.state.username,
-        'password' : this.state.password
+    await axios.post('http://192.168.43.48:8000/auth/login/', {
+      username: this.state.username,
+      password: this.state.password,
     })
     .then(response => {
-        token = response.data.token;
-    // We set the returned token as the default authorization header
-    axios.defaults.headers.common.Authorization = `Token ${token}`;
+      token = response.data.token;
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
+    
+    if(token !== ''){
+      this.props.navigation.navigate('Home')
+    }
+    else{
+      this.invalidVibration();
+      this.setState({error_message : 'INVALID CREDENTIALS!'})
+    }
+  };
 
-   if(token){
-    this.props.navigation.navigate('Home');
-   }
-
-   else{
-     alert("Credentials Invalid!")
-   }
-   }
-
-  
-   render() {
+  render() {
     return (
-      <ImageBackground
-        source={require('../img/back.jpg')}
-        style={{width: '100%', height: '100%'}}>
-        <View style={styles.container}>
-          <Text style={{fontSize: 50, marginBottom: 50, fontFamily: 'Arial'}}>
-            Pet Care
-          </Text>
-          <View style={styles.inputContainer}>
-            <Icon name="user" style={{fontSize: 25, marginLeft: 15}} />
-            <TextInput
-              style={styles.inputs}
-              placeholder="Username"
-              underlineColorAndroid="transparent"
-              onChangeText={username => this.setState({username})}
-            />
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <StatusBar hidden />
+        <ImageBackground
+          style={styles.imageBackground}
+          source={Images.LoginBackground}>
+          <View style={styles.registerContainer}>
+            <Text style={{color: '#696969', margin: 15, fontSize: 18}}>
+              SIGN IN
+            </Text>
+    <Text style={{color : 'red'}}>{this.state.error_message}</Text>
+            <Item style={[styles.ItemContainer, {marginTop: 30}]} rounded>
+              <Icon style={styles.IconStyle} name="school" />
+              <Input
+                onChangeText={username => this.setState({username : username})}
+                placeholder="Username"
+              />
+            </Item>
+
+            <Item style={[styles.ItemContainer, {marginTop: 30}]} rounded>
+              <Icon style={styles.IconStyle} name="lock" />
+              <Input
+                secureTextEntry = {true}
+                onChangeText={(password) => this.setState({password})}
+                placeholder="Password"
+              />
+            </Item>
+
+            <TouchableOpacity style={styles.button}
+            >
+              <Button 
+              onPress = {this.submitRequest}
+              color="#3C40C6" title="SIGN IN" />
+            </TouchableOpacity>
+
+            <Text style={{color: '#696969', marginTop: 50, fontSize: 11}}>
+              NEW TO PETCARE?
+            </Text>
+            <TouchableOpacity
+            onPress = {() => this.props.navigation.navigate('Auth_register')}
+            >
+            <Text style={{color: '#696969', marginTop: 5, fontSize: 13}}>
+              SIGN UP NOW
+            </Text>
+            </TouchableOpacity>
+           
           </View>
-
-          <View style={styles.inputContainer}>
-            <Icon name="eye" style={{fontSize: 25, marginLeft: 15}} />
-            <TextInput
-              style={styles.inputs}
-              placeholder="Password"
-              secureTextEntry={true}
-              underlineColorAndroid="transparent"
-              onChangeText={password => this.setState({password})}
-            />
-          </View>
-
-          <TouchableHighlight
-            style={[styles.buttonContainer, styles.loginButton]}
-            onPress={() => this.requestLogin()}>
-            <Text style={styles.loginText}>Login</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight
-            style={styles.buttonContainer}
-            onPress={() => this.onClickListener('restore_password')}>
-            <Text>Forgot your password?</Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight
-            style={styles.buttonContainer}
-            onPress={() => this.props.navigation.navigate('Auth_register')}>
-            <Text>New Customer? Register</Text>
-          </TouchableHighlight>
-        </View>
-      </ImageBackground>
+        </ImageBackground>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+  registerContainer: {
+    width: Dimensions.get('window').width * 0.85,
+    height: Dimensions.get('window').height * 0.7,
+    backgroundColor: '#F4F5F7',
+    alignSelf: 'center',
+    elevation: 1,
     alignItems: 'center',
   },
-  inputContainer: {
-    borderBottomColor: '#F5FCFF',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 30,
-    borderBottomWidth: 1,
-    width: 250,
-    height: 45,
-    marginBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  inputs: {
-    height: 45,
-    marginLeft: 16,
-    borderBottomColor: '#FFFFFF',
-    flex: 1,
-  },
-  inputIcon: {
-    width: 30,
-    height: 30,
-    marginLeft: 15,
+
+  imageBackground: {
+    width: '100%',
+    height: '100%',
     justifyContent: 'center',
   },
-  buttonContainer: {
-    height: 45,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-    width: 250,
-    borderRadius: 30,
+
+  ItemContainer: {
+    width: Dimensions.get('window').width * 0.85 - 30,
   },
-  loginButton: {
-    backgroundColor: '#00b5ec',
+
+  IconStyle: {
+    fontSize: 20,
+    marginLeft: 10,
   },
-  loginText: {
-    color: 'white',
+
+  button: {
+    marginTop: 50,
+    shadowColor: 'rgba(0, 0, 0, 10)',
+    shadowOpacity: 1,
+    elevation: 25,
   },
 });

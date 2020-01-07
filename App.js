@@ -11,12 +11,20 @@ import SplashScreen from './src/screens/SplashScreen';
 import Auth_login from './src/screens/Auth_login';
 import Auth_register from './src/screens/Auth_register';
 import Contact from './src/screens/Contact';
-import Treatment from './src/screens/Treatment';
-
+import Treatment from './src/screens/Treatment';                                            import Sidebar from './src/screens/Sidebar';
 
 const MainNavigator = createStackNavigator({
-  Auth_login : {screen : Auth_login},
-  Auth_register : {screen : Auth_register},
+  Auth_login : {
+  screen : Auth_login, 
+  navigationOptions : ({ navigation }) => ({
+    headerShown : false
+  })
+  },
+  Auth_register : {screen : Auth_register,
+  navigationOptions : ({ navigation }) => ({
+    headerShown : false
+  })
+  },
   Home : {screen : Home},
   PetFood : {screen : PetFood},
   PetMedicine : {screen : PetMedicine},
@@ -25,6 +33,7 @@ const MainNavigator = createStackNavigator({
   DetailProduct : {screen : DetailProduct},
   Contact : {screen : Contact},
   Treatment : {screen : Treatment},
+  Sidebar : {screen : Sidebar},
 },{
 defaultNavigationOptions:{
   headerStyle:{
@@ -39,7 +48,6 @@ defaultNavigationOptions:{
 
 const InitialNavigator = createSwitchNavigator({
   Splash : SplashScreen,
-  Login : Auth_login,
   App : MainNavigator
 })
 
