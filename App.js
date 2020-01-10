@@ -1,5 +1,9 @@
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import {createSwitchNavigator, createAppContainer} from 'react-navigation';
+import {createDrawerNavigator, DrawerActions} from 'react-navigation-drawer';
+import {createStackNavigator} from 'react-navigation-stack';
+
+import React from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';  
 
 import Home from './src/screens/Home';
 import PetFood from './src/screens/PetFood';
@@ -11,44 +15,139 @@ import SplashScreen from './src/screens/SplashScreen';
 import Auth_login from './src/screens/Auth_login';
 import Auth_register from './src/screens/Auth_register';
 import Contact from './src/screens/Contact';
-import Treatment from './src/screens/Treatment';                                            import Sidebar from './src/screens/Sidebar';
+import Treatment from './src/screens/Treatment';
+import CustomDrawerNavigator from './src/components/CustomDrawerNavigator';
 
-const MainNavigator = createStackNavigator({
+const PetFoodStack = createStackNavigator({
+  'PetFood' : {screen : PetFood, 
+  navigationOptions : {
+    header : null,
+  }},
+  'DetailProduct' : {screen : DetailProduct},
+})
+
+const PetAccessoriesStack = createStackNavigator({
+  'PetAccessories' : {screen : PetAccessories, 
+  navigationOptions : {
+    header : null,
+  }},
+  'DetailProduct' : {screen : DetailProduct},
+})
+
+const PetParlourStack = createStackNavigator({
+  'PetParlour' : {screen : PetParlour, 
+  navigationOptions : {
+    header : null,
+  }},
+  'DetailProduct' : {screen : DetailProduct},
+})
+
+const PetMedicineStack = createStackNavigator({
+  'PetMedicine' : {screen : PetMedicine, 
+  navigationOptions : {
+    header : null,
+  }},
+  'DetailProduct' : {screen : DetailProduct},
+})
+
+const DrawerNavigator = createDrawerNavigator({
+  'Home' : {
+    navigationOptions : {
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="md-menu" style={{ color: tintColor }} />
+      ),
+      drawerLabel : 'Home',
+    },
+    screen : Home
+  },
+  'PetFood' : {
+    navigationOptions : {
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="md-menu" style={{ color: tintColor }} />
+      ),
+      drawerLabel : 'Pet Food'
+    },
+    screen : PetFoodStack
+  }, 
+  'PetAccessories' : {
+    navigationOptions : {
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="md-menu" style={{ color: tintColor }} />
+      ),
+      drawerLabel : 'Pet Accessories'
+    },
+    screen : PetAccessoriesStack
+  }, 
+
+  'PetParlour' : {
+    navigationOptions : {
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="md-menu" style={{ color: tintColor }} />
+      ),
+      drawerLabel : 'Pet Parlour'
+    },
+    screen : PetParlourStack
+  },
+   
+  'PetMedicine' : {
+    navigationOptions : {
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="md-menu" style={{ color: tintColor }} />
+      ),
+      drawerLabel : 'Pet Medicine'
+    },
+    screen : PetMedicineStack
+  },
+
+  'Contact' : {
+    navigationOptions : {
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="md-menu" style={{ color: tintColor }} />
+      ),
+      drawerLabel : 'Contact'
+    },
+    screen : Contact
+  },
+
+  'Treatment' : {
+    navigationOptions : {
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="md-menu" style={{ color: tintColor }} />
+      ),
+      drawerLabel : 'Treatment'
+    },
+    screen : Treatment
+  },
+},
+{
+  contentComponent : CustomDrawerNavigator
+})
+
+MainNavigator.navigationOptions = ({navigation}) => ({
+  swipeEnabled: navigation.state.index == 0
+})
+
+const RegisterStack = createStackNavigator({
   Auth_login : {
-  screen : Auth_login, 
-  navigationOptions : ({ navigation }) => ({
-    headerShown : false
-  })
+    screen : Auth_login,
+    navigationOptions : ({ navigation }) => ({
+      headerShown : false,
+    })
   },
-  Auth_register : {screen : Auth_register,
-  navigationOptions : ({ navigation }) => ({
-    headerShown : false
-  })
-  },
-  Home : {screen : Home},
-  PetFood : {screen : PetFood},
-  PetMedicine : {screen : PetMedicine},
-  PetParlour : {screen : PetParlour},
-  PetAccessories : {screen : PetAccessories},
-  DetailProduct : {screen : DetailProduct},
-  Contact : {screen : Contact},
-  Treatment : {screen : Treatment},
-  Sidebar : {screen : Sidebar},
-},{
-defaultNavigationOptions:{
-  headerStyle:{
-    backgroundColor : '#021592',
-  },
-  headerTintColor: '#fff',
-  headerTitleStyle: {
-    fontWeight : 'bold',
+  Auth_register : {
+    screen : Auth_register,
+    navigationOptions : ({ navigation }) => ({
+      headerShown : false,
+    })
   }
-}
 })
 
-const InitialNavigator = createSwitchNavigator({
-  Splash : SplashScreen,
-  App : MainNavigator
+const AppSwitchNavigator = createSwitchNavigator({
+  'Drawer' : {screen : DrawerNavigator},
+  'Register' : {screen : RegisterStack},
+},
+{
+  initialRouteName : 'Register'
 })
 
-export default createAppContainer(InitialNavigator);
+export default createAppContainer(AppSwitchNavigator);

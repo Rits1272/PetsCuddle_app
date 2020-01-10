@@ -12,11 +12,9 @@ import {
 import {Text, Image, ScrollView, TouchableHighlight, ActivityIndicator, View} from 'react-native';
 import axios from 'axios';
 import Search from '../components/Search';
+import CustonHeader from '../components/CustomHeader';
 
 export default class PetFood extends React.Component {
-  static navigationOptions = {
-    title: 'Pet Food',
-  };
 
   constructor(props) {
     super(props);
@@ -48,6 +46,7 @@ export default class PetFood extends React.Component {
       }
     return (
       <ScrollView>
+        <CustonHeader navigation={this.props.navigation} />
           <Search />
         {this.state.data.map(data => (
             <TouchableHighlight

@@ -1,24 +1,14 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {Container, Button} from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import CustomHeader from '../components/CustomHeader';
 
 
-export default class Home extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return{
-      title : 'Home',
-    headerRight: () => (
-      <Button 
-      onPress = {() => navigation.navigate('Sidebar')}
-      style={{backgroundColor : '#021592', marginRight : 15}}>
-         <Icon style={{color: 'white', fontSize: 25}} name="bars" />
-      </Button>
-    )}
-  };
+export default class Home extends PureComponent {
   render() {
     return (
       <Container style={{flex: 1, flexDirection: 'column'}}>
+        <CustomHeader navigation={this.props.navigation} />
         <Button 
         onPress = {() => this.props.navigation.navigate('Treatment')}
         style={styles.btn} full danger>

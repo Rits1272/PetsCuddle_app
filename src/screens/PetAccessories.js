@@ -12,6 +12,8 @@ import {
 import {Text, Image, ScrollView} from 'react-native';
 import axios from 'axios';
 import Search from '../components/Search';
+import CustomHeader from '../components/CustomHeader';
+
 
 export default class PetAccessories extends React.Component{
   static navigationOptions = {
@@ -38,6 +40,7 @@ export default class PetAccessories extends React.Component{
   render() {
     return (
       <ScrollView>
+        <CustomHeader navigation={this.props.navigation} />
       <Search />
     {this.state.data.map(data => (
         <TouchableHighlight

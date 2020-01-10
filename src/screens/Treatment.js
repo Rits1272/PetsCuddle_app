@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 import DatePicker from 'react-native-datepicker';
 import axios from 'axios';
-
+import CustomHeader from '../components/CustomHeader';
 
 export default class Treatment extends React.Component {
   constructor(props) {
@@ -24,10 +24,6 @@ export default class Treatment extends React.Component {
       time: '',
     };
   }
-
-  static navigationOptions = {
-    title: 'Treatment',
-  };
 
   handleSubmit = () => {    
       var date = this.state.date.toString() + ' ' + this.state.time.toString()
@@ -45,6 +41,7 @@ export default class Treatment extends React.Component {
   render() {
     return (
       <Container>
+        <CustomHeader navigation={this.props.navigation} />
         <Content>
           <H1
             style={{
