@@ -19,7 +19,7 @@ import Treatment from './src/screens/Treatment';
 import CustomDrawerNavigator from './src/components/CustomDrawerNavigator';
 
 const PetFoodStack = createStackNavigator({
-  'PetFood' : {screen : PetFood, 
+  'Pet Food' : {screen : PetFood, 
   navigationOptions : {
     header : null,
   }},
@@ -27,7 +27,7 @@ const PetFoodStack = createStackNavigator({
 })
 
 const PetAccessoriesStack = createStackNavigator({
-  'PetAccessories' : {screen : PetAccessories, 
+  'Pet Accessories' : {screen : PetAccessories, 
   navigationOptions : {
     header : null,
   }},
@@ -35,7 +35,7 @@ const PetAccessoriesStack = createStackNavigator({
 })
 
 const PetParlourStack = createStackNavigator({
-  'PetParlour' : {screen : PetParlour, 
+  'Pet Parlour' : {screen : PetParlour, 
   navigationOptions : {
     header : null,
   }},
@@ -43,7 +43,7 @@ const PetParlourStack = createStackNavigator({
 })
 
 const PetMedicineStack = createStackNavigator({
-  'PetMedicine' : {screen : PetMedicine, 
+  'Pet Medicine' : {screen : PetMedicine, 
   navigationOptions : {
     header : null,
   }},
@@ -123,7 +123,7 @@ const DrawerNavigator = createDrawerNavigator({
   contentComponent : CustomDrawerNavigator
 })
 
-MainNavigator.navigationOptions = ({navigation}) => ({
+DrawerNavigator.navigationOptions = ({navigation}) => ({
   swipeEnabled: navigation.state.index == 0
 })
 
@@ -142,12 +142,25 @@ const RegisterStack = createStackNavigator({
   }
 })
 
+const SplashNavigator = createSwitchNavigator({
+  Splash : {
+    screen : SplashScreen,
+    navigationOptions : {
+      header : null,
+    },
+  },
+  Register : RegisterStack
+}, {
+  initialRouteName : 'Splash'
+})
+
 const AppSwitchNavigator = createSwitchNavigator({
   'Drawer' : {screen : DrawerNavigator},
-  'Register' : {screen : RegisterStack},
+  'Register' : {screen : SplashNavigator},
 },
 {
   initialRouteName : 'Register'
 })
+
 
 export default createAppContainer(AppSwitchNavigator);

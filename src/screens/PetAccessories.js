@@ -16,9 +16,6 @@ import CustomHeader from '../components/CustomHeader';
 
 
 export default class PetAccessories extends React.Component{
-  static navigationOptions = {
-    title: 'Pet Accessories',
-  };
 
   constructor(props) {
     super(props);
