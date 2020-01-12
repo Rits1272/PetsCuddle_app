@@ -17,6 +17,7 @@ import Auth_register from './src/screens/Auth_register';
 import Contact from './src/screens/Contact';
 import Treatment from './src/screens/Treatment';
 import SearchQuery from './src/screens/SearchQuery';
+import Logout from './src/screens/Logout';
 
 import CustomDrawerNavigator from './src/components/CustomDrawerNavigator';
 
@@ -123,6 +124,10 @@ const DrawerNavigator = createDrawerNavigator({
     },
     screen : Treatment
   },
+
+  'Logout': {
+    screen : Logout
+  }
 },
 {
   contentComponent : CustomDrawerNavigator
