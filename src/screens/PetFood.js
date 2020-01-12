@@ -1,82 +1,109 @@
 import React from 'react';
 import {
-  Container,
-  Content,
-  Card,
-  CardItem,
-  Button,
-  Left,
-  Right,
-  H1,
-} from 'native-base';
-import {Text, Image, ScrollView, TouchableHighlight, ActivityIndicator, View} from 'react-native';
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  Dimensions
+} from 'react-native';
 import axios from 'axios';
-import Search from '../components/Search';
-import CustonHeader from '../components/CustomHeader';
+import CustomHeader from '../components/CustomHeader';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class PetFood extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      loading : true,
+      loading: true,
     };
   }
 
   async componentDidMount() {
-    await axios.get('http://192.168.43.48:8000/api/products/petfood')
+    await axios
+      .get('http://192.168.43.48:8000/api/products/petfood')
       .then(res =>
         this.setState({
           data: res.data,
-          loading : false
+          loading: false,
         }),
       )
       .catch(err => console.log(err));
   }
 
   render() {
-      if(this.state.loading){
-          return (
-          <View style={{flex: 1,
-            alignItems: 'center', 
-            justifyContent: 'center'}}>
+    if (this.state.loading) {
+      return (
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <ActivityIndicator size="large" color="#0000ff" />
-        </View>)
-      }
+        </View>
+      );
+    }
     return (
       <ScrollView>
-        <CustonHeader navigation={this.props.navigation} />
-          <Search />
-        {this.state.data.map(data => (
-            <TouchableHighlight
-            onPress={()=> this.props.navigation.navigate('DetailProduct', {
-              data : data
-            })}
-            >
-           <Content>
-           <Card>
-             <CardItem cardBody>
-               <Image 
-               source={{uri: data.image}} style={{height: 350, width: null, flex: 1}}/>
-             </CardItem>
-             <CardItem>
-               <Left>
-                 <Button bordered dark>
-                   <H1 style={{margin : 5}}>{data.name}</H1>
-                 </Button>
-               </Left>
-               <Right>
-                   <Button bordered success >
-                 <H1 style={{margin : 5}}>Rs. {data.price}</H1>
-                 </Button>
-               </Right>
-             </CardItem>
-           </Card>
-         </Content>
-         </TouchableHighlight>
-        ))}
+        <CustomHeader navigation={this.props.navigation} />
+        <TouchableOpacity
+        onPress={() =>
+          this.props.navigation.navigate('SearchQuery', {
+            fulldata : this.state.data,
+          })}
+        >
+            <View style={[styles.ItemContainer, {borderWidth : 2 ,borderColor : '#ee7600',flexDirection : "row"}]}>
+              <Icon name='search' size={22} color='#ee7600'/>
+              <Text style={{marginLeft : 10, fontSize : 18, color:'#a9a9a9'}}>Search</Text>
+            </View>
+        </TouchableOpacity>
+        <View style={{marginTop: 10}}>
+          {this.state.data.map(data => (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('DetailProduct', {
+                  data: data,
+                })}
+              >
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  paddingTop: 5,
+                  paddingBottom: 8,
+                  borderBottomColor: '#d3d3d3',
+                  borderBottomWidth: 1,
+                }}>
+                <View style={{flex: 0.3, marginLeft: 10}}>
+                  <Image
+                    source={{uri: data.image}}
+                    style={{height: 150, width: null}}
+                  />
+                </View>
+                <View style={{flex: 0.7, margin: 20}}>
+                  <Text style={{fontSize: 22, marginBottom: 7}}>
+                    {data.name}
+                  </Text>
+                  <Text numberOfLines={2} style={{marginBottom: 15}}>
+                    {data.description}
+                  </Text>
+                  <Icon name="rupee" size={18}>
+                    <Text style={{fontWeight: 'bold'}}>{data.price}</Text>
+                  </Icon>
+                </View>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
       </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+   ItemContainer : {
+    width : Dimensions.get('window').width * 0.9,
+    padding : 12,
+    alignSelf : 'center',
+    marginBottom : 10,
+  },
+})

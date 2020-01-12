@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ImageBackground, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class SplashScreen extends React.Component {
   performTimeConsumingTask = async() => {
@@ -17,7 +18,20 @@ class SplashScreen extends React.Component {
     const data = await this.performTimeConsumingTask();
 
     if (data !== null) {
-      this.props.navigation.navigate('Register');
+      var token = ''
+      try{
+        token = await AsyncStorage.getItem('token');
+        console.log("Token", token);
+        if(token){
+          this.props.navigation.navigate('Home');
+        }
+        else{
+          this.props.navigation.navigate('Register')
+        }
+      }
+      catch(error){
+        console.log("Error fetching token");
+      }
     }
   }
 

@@ -16,6 +16,8 @@ import Auth_login from './src/screens/Auth_login';
 import Auth_register from './src/screens/Auth_register';
 import Contact from './src/screens/Contact';
 import Treatment from './src/screens/Treatment';
+import SearchQuery from './src/screens/SearchQuery';
+
 import CustomDrawerNavigator from './src/components/CustomDrawerNavigator';
 
 const PetFoodStack = createStackNavigator({
@@ -24,6 +26,9 @@ const PetFoodStack = createStackNavigator({
     header : null,
   }},
   'DetailProduct' : {screen : DetailProduct},
+  'SearchQuery' : {screen : SearchQuery, navigationOptions:{
+    header : null
+  }},
 })
 
 const PetAccessoriesStack = createStackNavigator({

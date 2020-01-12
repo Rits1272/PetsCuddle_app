@@ -8,12 +8,13 @@ import {
   Dimensions,
   Button,
   TouchableOpacity,
-  Vibration
+  Vibration,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import Images from '../constants/Images';
 import {Input, Item} from 'native-base';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Auth_login extends Component {
   constructor(props) {
@@ -41,8 +42,15 @@ export default class Auth_login extends Component {
     .catch(err => console.log(err))
     
     if(token !== ''){
-      this.props.navigation.navigate('Home')
+      try{
+        await AsyncStorage.setItem('token', token);
+        this.props.navigation.navigate('Home')
+      }
+      catch(error){
+        console.log("Error saving token");
+      }
     }
+
     else{
       this.invalidVibration();
       this.setState({error_message : 'INVALID CREDENTIALS!'})
