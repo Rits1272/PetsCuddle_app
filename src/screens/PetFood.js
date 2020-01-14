@@ -12,6 +12,7 @@ import {
 import axios from 'axios';
 import CustomHeader from '../components/CustomHeader';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Filter from '../components/Filter';
 
 export default class PetFood extends React.Component {
   constructor(props) {
@@ -56,7 +57,8 @@ export default class PetFood extends React.Component {
               <Text style={{marginLeft : 10, fontSize : 18, color:'#a9a9a9'}}>Search</Text>
             </View>
         </TouchableOpacity>
-        <View style={{marginTop: 10}}>
+       <Filter navigation={this.props.navigation} />
+        <View style={{marginTop: 15}}>
           {this.state.data.map(data => (
             <TouchableOpacity
               onPress={() =>

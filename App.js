@@ -18,11 +18,14 @@ import Contact from './src/screens/Contact';
 import Treatment from './src/screens/Treatment';
 import SearchQuery from './src/screens/SearchQuery';
 import Logout from './src/screens/Logout';
+import AddSubscription from './src/screens/AddSubscription';
+
+
 
 import CustomDrawerNavigator from './src/components/CustomDrawerNavigator';
 
 const PetFoodStack = createStackNavigator({
-  'Pet Food' : {screen : PetFood, 
+  'Pet Care' : {screen : PetFood, 
   navigationOptions : {
     header : null,
   }},
@@ -30,6 +33,7 @@ const PetFoodStack = createStackNavigator({
   'SearchQuery' : {screen : SearchQuery, navigationOptions:{
     header : null
   }},
+  'AddSubscription' : {screen : AddSubscription},
 })
 
 const PetAccessoriesStack = createStackNavigator({

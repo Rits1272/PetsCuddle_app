@@ -179,6 +179,7 @@ android {
 }
 
 dependencies {
+    implementation project(':rn-android-picker-dialog')
     implementation project(':react-native-reanimated')
     implementation project(':react-native-vector-icons')
     implementation project(':@philly25_react-native-paytm')

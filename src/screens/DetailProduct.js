@@ -56,7 +56,9 @@ export default class DetailProduct extends React.Component {
             </Right>
           </CardItem>
         </Card>
-        <Button full warning block style={{margin: 10}}>
+        <Button
+        onPress = {() => this.props.navigation.navigate('AddSubscription')}
+        full warning block style={{margin: 10}}>
           <Text style={{color: 'white', fontSize: 20}}>Buy</Text>
         </Button>
         <Button

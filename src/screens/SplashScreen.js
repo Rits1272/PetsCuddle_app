@@ -21,7 +21,6 @@ class SplashScreen extends React.Component {
       var token = ''
       try{
         token = await AsyncStorage.getItem('token');
-        console.log("Token", token);
         if(token){
           this.props.navigation.navigate('Home');
         }
