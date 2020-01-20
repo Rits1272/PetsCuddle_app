@@ -109,7 +109,7 @@ export default class Treatment extends React.Component {
                 cancelBtnText="Cancel"
                 customStyles={{
                   dateInput: {
-                    marginLeft: 10,
+                    marginLeft: 5,
                     borderColor: 'red',
                   },
                 }}
@@ -134,7 +134,7 @@ export default class Treatment extends React.Component {
                 iconSource={require('../img/time_png.png')}
                 customStyles={{
                   dateInput: {
-                    marginLeft: 10,
+                    marginLeft: 5,
                     borderColor: 'red',
                   },
                 }}

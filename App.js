@@ -19,8 +19,7 @@ import Treatment from './src/screens/Treatment';
 import SearchQuery from './src/screens/SearchQuery';
 import Logout from './src/screens/Logout';
 import AddSubscription from './src/screens/AddSubscription';
-
-
+import Profile from './src/screens/Profile';
 
 import CustomDrawerNavigator from './src/components/CustomDrawerNavigator';
 
@@ -129,6 +128,16 @@ const DrawerNavigator = createDrawerNavigator({
     screen : Treatment
   },
 
+  'Your Profile': {
+    navigationOptions : {
+      drawerIcon : ({ tintColor }) => (
+        <Icon name='md-menu'style={{ color : tintColor }} />
+      ),
+      drawerLabel : 'Profile'
+    },
+    screen : Profile
+  },
+
   'Logout': {
     screen : Logout
   }
@@ -153,6 +162,9 @@ const RegisterStack = createStackNavigator({
     navigationOptions : ({ navigation }) => ({
       headerShown : false,
     })
+  },
+  Profile: {
+    screen : Profile,
   }
 })
 

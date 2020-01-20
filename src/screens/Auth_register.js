@@ -16,6 +16,7 @@ import Images from '../constants/Images';
 import {Input, Item} from 'native-base';
 
 export default class Auth_register extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,12 +26,16 @@ export default class Auth_register extends Component {
     };
   }
 
-  submitRequest = async () => {
-    await axios.post('http://192.168.43.48:8000/auth/register/', {
-      username: this.state.username,
-      password: this.state.password,
-      email: this.state.email,
-    });
+  submitRequest = () => {
+    this.props.navigation.navigate('Profile')
+    // await axios.post('http://192.168.43.48:8000/auth/register/', {
+    //   username: this.state.username,
+    //   password: this.state.password,
+    //   email: this.state.email,
+    // })
+    // .then(res => res.json())
+    // .then(this.props.navigation.navigate('Profile'))
+    // .catch(err => console.log(err));
   };
 
   render() {
@@ -75,7 +80,7 @@ export default class Auth_register extends Component {
               </Item>
 
               <TouchableOpacity style={styles.button}>
-                <Button color='#3C40C6' title='Create Account'/>
+                <Button onPress={this.submitRequest} color='#3C40C6' title='Create Account'/>
               </TouchableOpacity>
   
               <Text style={{color : '#696969', marginTop : 50, fontSize : 11}}>ALREADY HAVE AN ACCOUNT?</Text>
