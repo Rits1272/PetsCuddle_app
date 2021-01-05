@@ -50,7 +50,7 @@ export default class Cart extends React.Component{
                     <Text style={{fontWeight: 'bold', fontSize: 20}}>{item.name}</Text>
                     <Text style={{color: "#a3a3a3", marginBottom: 15}}>{item.category}</Text>
                     <Icon name='rupee' size={18} style={{marginBottom: 10}}>
-                        <Text style={{fontWeigth: 'bold', fontSize: 20}}>{item.price}</Text>
+                        <Text style={{fontWeight: 'bold', fontSize: 20}}>{item.price}</Text>
                     </Icon>
                     <Text numberOfLines={2}>{item.description}</Text>
                 </View>

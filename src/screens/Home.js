@@ -73,7 +73,7 @@ export default class Home extends Component {
             </View>
           </View>
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Treatment')}
+          onPress={() => this.props.navigation.navigate('PetParlour')}
           style={{flex:1}}>
           <Card>
             <CardItem cardBody>
