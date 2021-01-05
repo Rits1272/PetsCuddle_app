@@ -32,7 +32,7 @@ export default class Home extends Component {
             <CardItem cardBody>
               <Image
                 source={require('../img/treatment_image.jpg')}
-                style={{height: this.state.imageHeight, width: null, flex: 1}}
+                style={{height: this.state.imageHeight, width: null, flex: 3}}
               />
             </CardItem>
             <View style={{alignItems: 'center'}}>

@@ -1,6 +1,8 @@
 import React from 'react';
-import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, Text, StyleSheet, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+
+const W = Dimensions.get('window').width - 50;
 
 const CustomHeader = ({navigation}) => (
   <View style={styles.container}>
@@ -15,6 +17,14 @@ const CustomHeader = ({navigation}) => (
       style={{marginTop: 33, fontSize: 23, marginLeft: 10, fontWeight: 'bold'}}>
       {navigation.state.routeName}
     </Text>
+    {navigation.state.routeName == 'Home' ?
+        <View>
+            <TouchableOpacity onPress = {() => navigation.navigate('Cart')} 
+                style={{position: 'absolute', marginLeft: 180, marginTop: 32}}>
+                <Icon name='shoppingcart' size={32}/>
+            </TouchableOpacity>
+        </View>
+      : <View></View>}
   </View>
 );
 

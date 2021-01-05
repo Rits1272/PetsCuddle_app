@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image} from 'react-native';
+import {Text, View, Image, TouchableOpacity} from 'react-native';
 import {
   Card,
   CardItem,
@@ -7,16 +7,20 @@ import {
   H1,
   Left,
   Right,
-  Body,
+  Body
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ScrollView} from 'react-native-gesture-handler';
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 export default class DetailProduct extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
+      add : "Add to Cart", 
     };
   }
 
@@ -25,6 +29,25 @@ export default class DetailProduct extends React.Component {
     this.setState({
       data: data,
     });
+  }
+
+  add_to_cart = () => {
+      if(this.state.add == "Add to Cart"){
+          this.setState({add: "Remove from Cart"});
+      }
+      else{
+          this.setState({add: "Add to Cart"});
+      }
+      const username = 'test'; 
+      const params = {
+        name: this.state.data.name,
+        price: this.state.data.price, 
+        category: this.state.data.category,
+        description: this.state.data.description,
+        image: this.state.data.image, 
+      };
+      console.log("CALLED");
+      axios.post(`http://192.168.43.48:8000/api/cart/${username}/`, params);
   }
 
   static navigationOptions = ({navigation}) => {
@@ -71,9 +94,9 @@ export default class DetailProduct extends React.Component {
             marginTop: 5,
             marginBottom: 10,
           }}>
-          <Icon style={{color: 'white', fontSize: 20}} name="cart-plus">
-            <Text style={{color: 'white', fontSize: 20}}> Add to Cart</Text>
-          </Icon>
+          <TouchableOpacity onPress = {this.add_to_cart}>
+            <Text style={{color: 'white', fontSize: 20}}>{this.state.add}</Text>
+          </TouchableOpacity>
         </Button>
         <Card>
           <CardItem>

@@ -44,6 +44,7 @@ export default class Auth_login extends Component {
     if(token !== ''){
       try{
         await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('username', this.state.username);
         this.props.navigation.navigate('Home')
       }
       catch(error){
