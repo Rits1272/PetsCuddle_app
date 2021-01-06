@@ -5,6 +5,7 @@ import {Container, Card, CardItem, Text, Left, Right, H1, Button} from 'native-b
 import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 export default class Cart extends React.Component{
@@ -21,8 +22,14 @@ export default class Cart extends React.Component{
     }
 
     fetchData = async () => {
+        const username = await AsyncStorage.getItem('username');
+        const token = await AsyncStorage.getItem('token');
         this.setState({loading: true});
-        await axios.get('http://192.168.43.48:8000/api/cart/' + "test")
+        await axios.get(`http://192.168.43.48:8000/api/cart/${username}`, {
+            headers: {
+                'Authorization': 'Token ' + token
+            }
+        })
         .then(res => this.setState({data: res.data}))
         .catch(err => console.log(err));
         this.setState({loading: false});
@@ -32,12 +39,17 @@ export default class Cart extends React.Component{
         this.fetchData();
     }
 
-    remove = (name) => {
-      const username = 'test'; 
+    remove = async (name) => {
+      const username = await AsyncStorage.getItem('username');
+      const token = await AsyncStorage.getItem('token');
       const params = {
         name: name,
       };
-      axios.post(`http://192.168.43.48:8000/api/cart/${username}/`, params);
+      axios.post(`http://192.168.43.48:8000/api/cart/${username}/`, params, {
+            headers:{
+                'Authorization' : 'Token ' + token
+            }
+      });
       this.onRefresh()
   }
     
@@ -70,7 +82,6 @@ export default class Cart extends React.Component{
     }
 
     render(){
-        console.log(this.state.data)
         if (this.state.loading){
             return(
                 <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>

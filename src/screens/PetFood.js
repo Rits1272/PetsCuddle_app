@@ -14,6 +14,8 @@ import axios from 'axios';
 import CustomHeader from '../components/CustomHeader';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Filter from '../components/Filter';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 export default class PetFood extends React.Component {
   constructor(props) {
@@ -25,8 +27,13 @@ export default class PetFood extends React.Component {
   }
 
   async componentDidMount() {
+    const token = await AsyncStorage.getItem('token');
     await axios
-      .get('http://192.168.43.48:8000/api/products/petfood')
+      .get('http://192.168.43.48:8000/api/products/petfood', {
+            headers: {
+                'Authorization': 'Token ' + token
+            }
+      })
       .then(res =>
         this.setState({
           data: res.data,

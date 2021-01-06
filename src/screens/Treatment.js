@@ -21,6 +21,7 @@ import DatePicker from 'react-native-datepicker';
 import axios from 'axios';
 import CustomHeader from '../components/CustomHeader';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Treatment extends React.Component {
   constructor(props) {
@@ -33,13 +34,22 @@ export default class Treatment extends React.Component {
     };
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     var date = this.state.date.toString() + ' ' + this.state.time.toString();
     date = date.toString();
-    axios.post('http://192.168.43.48:8000/api/appointment/', {
-      problem: this.state.problem,
-      description: this.state.description,
-      timeslot: date,
+    const username = await AsyncStorage.getItem('username');
+    const token = await AsyncStorage.getItem('token');
+
+    const params = {
+        problem: this.state.problem, 
+        description: this.state.description,
+        timeslot: date
+    }
+
+    axios.post('http://192.168.43.48:8000/api/appointment/', params, {
+        headers:{
+            'Authorization': 'Token ' + token
+        }
     });
     Alert.alert('Appointment Booked Succesfully!');
     this.props.navigation.navigate('Home');

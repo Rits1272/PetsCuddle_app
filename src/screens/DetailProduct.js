@@ -31,14 +31,15 @@ export default class DetailProduct extends React.Component {
     });
   }
 
-  add_to_cart = () => {
+  add_to_cart = async () => {
       if(this.state.add == "Add to Cart"){
           this.setState({add: "Remove from Cart"});
       }
       else{
           this.setState({add: "Add to Cart"});
       }
-      const username = 'test'; 
+      const username = await AsyncStorage.getItem("username");
+      const token = await AsyncStorage.getItem("token");
       const params = {
         name: this.state.data.name,
         price: this.state.data.price, 
@@ -47,7 +48,11 @@ export default class DetailProduct extends React.Component {
         image: this.state.data.image, 
       };
       console.log("CALLED");
-      axios.post(`http://192.168.43.48:8000/api/cart/${username}/`, params);
+      axios.post(`http://192.168.43.48:8000/api/cart/${username}/`, params, {
+         headers:{
+            'Authorization': 'Token ' + token
+         }
+      });
   }
 
   static navigationOptions = ({navigation}) => {

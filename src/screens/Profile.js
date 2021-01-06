@@ -3,7 +3,7 @@ import {Text, View, StyleSheet, Alert, StatusBar} from 'react-native';
 import {Form, Item, Input, Label, Card, CardItem, Button} from 'native-base';
 import axios from 'axios';
 import CustomHeader from '../components/CustomHeader';
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Profile extends React.Component {
    constructor(props){
@@ -22,8 +22,13 @@ export default class Profile extends React.Component {
   }
 
   fetchDetails = async () => {
-    const username = 'test';
-    await axios.get(`http://192.168.43.48:8000/api/profile/${username}`)
+    const username = await AsyncStorage.getItem('username');
+    const token = await AsyncStorage.getItem('token');
+    await axios.get(`http://192.168.43.48:8000/api/profile/${username}`, {
+        headers:{
+            'Authorization': 'Token ' + token
+        }
+    })
           .then(res => res.data[0])
           .then(res => this.setState({pincode: res['pincode'], first_line: res['first_line'], second_line: res['second_line'],
               phone: res['phone'], email: res['email']}))
