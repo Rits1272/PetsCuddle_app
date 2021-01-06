@@ -21,6 +21,7 @@ import Logout from './src/screens/Logout';
 import AddSubscription from './src/screens/AddSubscription';
 import Profile from './src/screens/Profile';
 import Cart from './src/screens/Cart';
+import Order from './src/screens/Order';
 
 import CustomDrawerNavigator from './src/components/CustomDrawerNavigator';
 
@@ -129,7 +130,7 @@ const DrawerNavigator = createDrawerNavigator({
     screen : Treatment
   },
 
-  'Your Profile': {
+  'Profile': {
     navigationOptions : {
       drawerIcon : ({ tintColor }) => (
         <Icon name='md-menu'style={{ color : tintColor }} />
@@ -141,6 +142,13 @@ const DrawerNavigator = createDrawerNavigator({
 
   'Cart': {
     screen: Cart
+  },
+
+  'Order':{
+    navigationOptions:{
+        drawerLabel: 'Your Orders'
+    },
+    screen: Order
   },
 
   'Logout': {

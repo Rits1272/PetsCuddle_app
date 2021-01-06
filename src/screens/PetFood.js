@@ -8,7 +8,8 @@ import {
   ActivityIndicator,
   View,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  FlatList
 } from 'react-native';
 import axios from 'axios';
 import CustomHeader from '../components/CustomHeader';
@@ -26,7 +27,8 @@ export default class PetFood extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  fetchData = async () => {
+    this.setState({loading: true});
     const token = await AsyncStorage.getItem('token');
     await axios
       .get('http://192.168.43.48:8000/api/products/petfood', {
@@ -37,41 +39,27 @@ export default class PetFood extends React.Component {
       .then(res =>
         this.setState({
           data: res.data,
-          loading: false,
         }),
       )
-      .catch(err => console.log(err));
+    .catch(err => console.log(err));
+    this.setState({loading: false});
   }
 
-  render() {
-    if (this.state.loading) {
-      return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      );
-    }
-    return (
-      <ScrollView>
-        <CustomHeader navigation={this.props.navigation} />
-        <TouchableOpacity
-        onPress={() =>
-          this.props.navigation.navigate('SearchQuery', {
-            fulldata : this.state.data,
-          })}
-        >
-            <View style={[styles.ItemContainer, {borderWidth : 2 ,borderColor : '#ee7600',flexDirection : "row"}]}>
-              <Icon name='search' size={22} color='#ee7600'/>
-              <Text style={{marginLeft : 10, fontSize : 18, color:'#a9a9a9'}}>Search</Text>
-            </View>
-        </TouchableOpacity>
-       <Filter navigation={this.props.navigation} />
+  async componentDidMount() {
+    this.fetchData();
+  }
+
+  onRefresh = () => {
+    this.fetchData();
+  }
+
+  _renderItem = ({item}) => {
+        return(
         <View style={{marginTop: 15}}>
-          {this.state.data.map(data => (
             <TouchableOpacity
               onPress={() =>
                 this.props.navigation.navigate('DetailProduct', {
-                  data: data,
+                  data: item,
                 })}
               >
               <View
@@ -85,26 +73,59 @@ export default class PetFood extends React.Component {
                 }}>
                 <View style={{flex: 0.3, marginLeft: 10}}>
                   <Image
-                    source={{uri: data.image}}
+                    source={{uri: item.image}}
                     style={{height: 150, width: null}}
                   />
                 </View>
                 <View style={{flex: 0.7, margin: 20}}>
                   <Text style={{fontSize: 22, marginBottom: 7}}>
-                    {data.name}
+                    {item.name}
                   </Text>
                   <Text numberOfLines={2} style={{marginBottom: 15}}>
-                    {data.description}
+                    {item.description}
                   </Text>
                   <Icon name="rupee" size={18}>
-                    <Text style={{fontWeight: 'bold'}}>{data.price}</Text>
+                    <Text style={{fontWeight: 'bold'}}>{item.price}</Text>
                   </Icon>
                 </View>
               </View>
             </TouchableOpacity>
-          ))}
         </View>
-      </ScrollView>
+        );
+  }
+
+  render() {
+    if (this.state.loading) {
+      return (
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
+    }
+    return (
+        <View>
+        <CustomHeader navigation={this.props.navigation} />
+        <TouchableOpacity
+        onPress={() =>
+          this.props.navigation.navigate('SearchQuery', {
+            fulldata : this.state.data,
+          })}
+        >
+            <View style={[styles.ItemContainer, {borderWidth : 2 ,borderColor : '#ee7600',flexDirection : "row"}]}>
+              <Icon name='search' size={22} color='#ee7600'/>
+              <Text style={{marginLeft : 10, fontSize : 18, color:'#a9a9a9'}}>Search</Text>
+            </View>
+        </TouchableOpacity>
+       <Filter navigation={this.props.navigation} />
+       <FlatList 
+           data = {this.state.data}
+           extraData = {this.state}
+           renderItem = {this._renderItem}
+           onRefresh = {this.onRefresh}
+           refreshing = {this.state.loading}
+           keyExtractor={(item) => item.$t}
+        /> 
+      </View>
     );
   }
 }

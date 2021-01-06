@@ -5464,6 +5464,13 @@ react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6, react-is
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
 
+react-native-awesome-alerts@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-awesome-alerts/-/react-native-awesome-alerts-1.4.2.tgz#197c61a403bbe0bda8d4ddf7c9eaf41bba03f321"
+  integrity sha512-yKdah2rp6rTFaF0IlKU6U0TvhOVGpOQ2E50sFcPe2i6XzwjgBIhB6kNXunQDuvzBRCTgWkEjbd+TC30dmbNWvw==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-communications@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"

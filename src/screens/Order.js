@@ -1,31 +1,49 @@
 import React from 'react';
 import CustomHeader from '../components/CustomHeader';
-import {View, ActivityIndicator, StatusBar, FlatList, Image} from 'react-native';
+import {View, ActivityIndicator, StatusBar, FlatList, Image, Alert} from 'react-native';
 import {Container, Card, CardItem, Text, Left, Right, H1, Button} from 'native-base';
 import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
+import { withNavigation } from "react-navigation";
+import AwesomeAlert from 'react-native-awesome-alerts';
 
-
-export default class Cart extends React.Component{
+class Order extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             data: [], 
             loading: true,
+            showAlert: false,
         };
     }
 
-    async componentDidMount(){
+    showAlert = () => {
+        this.setState({showAlert: true});
+    }
+
+    hideAlert = () => {
+        this.setState({showAlert: false});
+    }
+
+    componentDidMount(){
         this.fetchData();
+    }
+
+    EmptyOrderList = () => {
+            return(
+                <View style={{flex: 1, alignItems: 'center', marginTop: 250}}>
+                    <Text style={{color:'#a3a3a3'}}> Your order list looks empty</Text>
+                </View>
+            );
     }
 
     fetchData = async () => {
         const username = await AsyncStorage.getItem('username');
         const token = await AsyncStorage.getItem('token');
         this.setState({loading: true});
-        await axios.get(`http://192.168.43.48:8000/api/cart/${username}`, {
+        await axios.get(`http://192.168.43.48:8000/api/order/${username}`, {
             headers: {
                 'Authorization': 'Token ' + token
             }
@@ -39,22 +57,13 @@ export default class Cart extends React.Component{
         this.fetchData();
     }
 
-    
-    EmptyCartList = () => {
-            return(
-                <View style={{flex: 1, alignItems: 'center', marginTop: 250}}>
-                    <Text style={{color:'#a3a3a3'}}> Your cart list looks empty</Text>
-                </View>
-            );
-    }
-
     remove = async (name) => {
       const username = await AsyncStorage.getItem('username');
       const token = await AsyncStorage.getItem('token');
       const params = {
-        name: name,
+        name: this.state.data[0]['name'],
       };
-      axios.post(`http://192.168.43.48:8000/api/cart/${username}/`, params, {
+      axios.post(`http://192.168.43.48:8000/api/order/${username}/`, params, {
             headers:{
                 'Authorization' : 'Token ' + token
             }
@@ -82,16 +91,41 @@ export default class Cart extends React.Component{
                     />
                 </View>
             </View>
-                <Button onPress={() => this.remove(name_of_product)} 
+                <Button onPress={() => this.showAlert()} 
                     danger style={{flex: 1, margin: 5, marginTop: 10,  justifyContent: 'center'}}>
-                    <Text>Remove</Text>
+                    <Text>Cancel Order</Text>
                 </Button>
             </View>
         )
     }
 
     render(){
-        if (this.state.loading){
+        if(this.state.showAlert){
+            return(
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff'}}>
+                <AwesomeAlert
+                    show={this.state.showAlert}
+                    showProgress={false}
+                        title="Order Cancellation"
+            message="Are you sure you want to cancel the order?"
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
+            showCancelButton={true}
+            showConfirmButton={true}
+            cancelText="No"
+            confirmText="Yes"
+            confirmButtonColor="red"
+            onCancelPressed={() => {
+                this.hideAlert();
+             }}
+            onConfirmPressed={() => {
+                 this.hideAlert();
+                 this.remove();
+            }}
+            />
+        </View>
+        )}
+        if(this.state.loading){
             return(
                 <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
                     <ActivityIndicator size="large" color="#0000ff"/>
@@ -101,7 +135,7 @@ export default class Cart extends React.Component{
         return(
             <Container style={{flex:1}}>
                 <StatusBar backgroundColors="#fff"/>
-                 <CustomHeader navigation={this.props.navigation} title="Cart"/>
+                <CustomHeader navigation={this.props.navigation}/> 
                  <FlatList
                     data={this.state.data}
                     extraData={this.state}
@@ -109,9 +143,11 @@ export default class Cart extends React.Component{
                     onRefresh={this.onRefresh}
                     refreshing={this.state.loading}
                     keyExtractor={(item) => item.$t}
-                    ListEmptyComponent={this.EmptyCartList()}
+                    ListEmptyComponent={this.EmptyOrderList()}
                 />
             </Container>
         );
     }
 }
+
+export default withNavigation(Order);
