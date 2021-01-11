@@ -27,3 +27,4 @@ Home Screen             |        Product List Screen         |            Cart S
 
 ### Future Prospects
 - [ ] Adding Payment Gateway
+- [ ] Writing unit test cases and integration test cases
